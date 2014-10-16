@@ -1,0 +1,78 @@
+<!doctype html>
+<html ng-app="todoApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+  </head>
+
+
+  <script type="text/javascript">
+
+  angular.module('todoApp', [])
+  .controller('TodoController', ['$scope','$http',function($scope,$http) {
+
+
+    $http.get('/get')
+    .success(function(data){
+
+      $scope.grades=data;
+
+    });
+
+
+    $scope.delete = function(del)
+    {
+      $http.get('/deleteGrade/'+del)
+      .success(function(data){
+      });
+
+      $http.get('/get')
+      .success(function(data){
+
+      $scope.grades=data;
+
+      });
+      
+    }
+
+
+  }]);
+
+  </script>
+
+
+  <body ng-controller="TodoController">
+
+    <div class="container">
+   
+      <table class="table table-bordered">
+
+        <thead>
+
+          <th>No</th>
+          <th>Subject</th>
+          <th>Credit</th>
+          <th>Grade</th>
+          <th>Tools</th>
+
+        </thead>
+
+        <tr ng-repeat="a in grades">
+          <td>{{$index+1}}</td>
+          <td>{{a.subject}}</td>
+          <td>{{a.credit}}</td>
+          <td>{{a.grade}}</td>
+          <td><button type="button" class="btn btn-danger" ng-click="delete(a._id)">Delete</button></td>
+        </tr>
+
+
+      </table>
+
+    </div>
+  </body>
+</html>
